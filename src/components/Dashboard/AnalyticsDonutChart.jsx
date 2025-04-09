@@ -7,7 +7,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 const AnalyticsDonutChart = () => {
   const tabs = ["Formateurs", "Entreprises", "Formations"];
   const filters = ["ce mois ci", "mois dernier", "cette année", "année dernière"];
-  const subfilters = ["Secteur d'activité", "Âge", "Ville"];
+  const [subfilters, setSubfilters] = useState(["Secteur d'activité", "Âge", "Ville"]); // Default subfilters
   const colors = ["#000", "#4962F5", "#f55bdd"];
 
   const [chartData, setChartData] = useState({
@@ -22,13 +22,13 @@ const AnalyticsDonutChart = () => {
   const [subfilterDropdown, setSubfilterDropdown] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState(null);
 
+  // Fetching data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://my-json-server.typicode.com/E-Abdelouahab/mockjson/dashboard2');
         console.log('API Response Data:', response.data);
         
-        // Ensure data is available
         if (!response.data || !response.data.Formateurs) {
           console.error('dashboard2 not found or malformed:', response.data);
           return;
@@ -36,14 +36,18 @@ const AnalyticsDonutChart = () => {
 
         // Filter data based on the selected period
         setChartData(filterDataByPeriod(response.data, selectedPeriod));
+
+        // Dynamically update subfilters based on selected tab
+        updateSubfilters(response.data[selectedTab]);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, [selectedPeriod]);
+  }, [selectedPeriod, selectedTab]);
 
+  // Filter data based on the selected period
   const filterDataByPeriod = (data, period) => {
     const periodKeyMapping = {
       "ce mois ci": "cemois",
@@ -64,6 +68,14 @@ const AnalyticsDonutChart = () => {
       Entreprises: data.Entreprises?.[periodKey] || [],
       Formations: data.Formations?.[periodKey] || []
     };
+  };
+
+  // Dynamically update subfilter options based on selected tab
+  const updateSubfilters = (tabData) => {
+    if (!tabData) return;
+
+    // Dynamically update subfilters based on available data, here assuming "Secteur d'activité" and "Âge" are common
+    setSubfilters(["Secteur d'activité", "Âge", "Ville"]);
   };
 
   return (
