@@ -168,6 +168,8 @@ const AnalyticsDonutChart = () => {
                 paddingAngle={2}
                 dataKey="value"
                 onClick={(_, index) => setSelectedSegment(index)}
+                onMouseEnter={(_, index) => setSelectedSegment(index)}
+                onMouseLeave={() => setSelectedSegment(null)}
               >
                 {chartData[selectedTab].map((entry, index) => (
                   <Cell
