@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer,Tooltip } from 'recharts';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
 const AnalyticsDonutChart = () => {
   const tabs = ["Formateurs", "Entreprises", "Formations"];
@@ -9,30 +10,61 @@ const AnalyticsDonutChart = () => {
   const subfilters = ["Secteur d'activité", "Âge", "Ville"];
   const colors = ["#000", "#4962F5", "#f55bdd"];
 
-  const chartData = {
-    Formateurs: [
-      { name: "Dossier en attente", value: 20 },
-      { name: "Inscrits", value: 50 },
-      { name: "Refusés", value: 30 }
-    ],
-    Entreprises: [
-      { name: "Dossier en attente", value: 15 },
-      { name: "Inscrits", value: 60 },
-      { name: "Refusés", value: 25 }
-    ],
-    Formations: [
-      { name: "Dossier en attente", value: 10 },
-      { name: "Inscrits", value: 70 },
-      { name: "Refusés", value: 20 }
-    ]
-  };
-
+  const [chartData, setChartData] = useState({
+    Formateurs: [],
+    Entreprises: [],
+    Formations: []
+  });
   const [selectedTab, setSelectedTab] = useState("Formateurs");
   const [selectedPeriod, setSelectedPeriod] = useState("ce mois ci");
   const [selectedSubfilter, setSelectedSubfilter] = useState("Secteur d'activité");
   const [filterDropdown, setFilterDropdown] = useState(false);
   const [subfilterDropdown, setSubfilterDropdown] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://my-json-server.typicode.com/E-Abdelouahab/mockjson/dashboard2');
+        console.log('API Response Data:', response.data);
+        
+        // Ensure data is available
+        if (!response.data || !response.data.Formateurs) {
+          console.error('dashboard2 not found or malformed:', response.data);
+          return;
+        }
+
+        // Filter data based on the selected period
+        setChartData(filterDataByPeriod(response.data, selectedPeriod));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [selectedPeriod]);
+
+  const filterDataByPeriod = (data, period) => {
+    const periodKeyMapping = {
+      "ce mois ci": "cemois",
+      "mois dernier": "moisdernier",
+      "cette année": "cetteannee",
+      "année dernière": "anneederniere",
+    };
+
+    const periodKey = periodKeyMapping[period]; // Map period to the correct key
+
+    if (!periodKey) {
+      console.error('Invalid period selected');
+      return { Formateurs: [], Entreprises: [], Formations: [] };
+    }
+
+    return {
+      Formateurs: data.Formateurs?.[periodKey] || [],
+      Entreprises: data.Entreprises?.[periodKey] || [],
+      Formations: data.Formations?.[periodKey] || []
+    };
+  };
 
   return (
     <div className="bg-white shadow-md  rounded-sm p-6">
@@ -114,39 +146,39 @@ const AnalyticsDonutChart = () => {
         </div>
 
         {/* Donut Chart */}
-          <div className="w-2/3 h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-            data={chartData[selectedTab]}
-            innerRadius={60}
-            outerRadius={100}
-            paddingAngle={2}
-            dataKey="value"
-            onClick={(_, index) => setSelectedSegment(index)}
-                >
-            {chartData[selectedTab].map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={colors[index % colors.length]}
-                opacity={selectedSegment === null || selectedSegment === index ? 1 : 0.5}
+        <div className="w-2/3 h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={chartData[selectedTab]}
+                innerRadius={60}
+                outerRadius={100}
+                paddingAngle={2}
+                dataKey="value"
+                onClick={(_, index) => setSelectedSegment(index)}
+              >
+                {chartData[selectedTab].map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={colors[index % colors.length]}
+                    opacity={selectedSegment === null || selectedSegment === index ? 1 : 0.5}
+                  />
+                ))}
+              </Pie>
+              <Tooltip
+                formatter={(value, name) => [`${value}`, name]}
+                contentStyle={{
+                  backgroundColor: 'white',
+                  border: '1px solid #ccc',
+                  borderRadius: '4px',
+                  padding: '8px',
+                }}
               />
-            ))}
-                </Pie>
-                <Tooltip
-            formatter={(value, name) => [`${value}`, name]}
-            contentStyle={{
-              backgroundColor: 'white',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              padding: '8px'
-            }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
 
-          {/* Stats */}
+        {/* Stats */}
         <div className="text-center w-1/3">
           <div className="text-blue-600 text-sm font-medium flex justify-center items-center gap-1">
             <svg width="16" height="16" fill="none">

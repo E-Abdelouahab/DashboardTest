@@ -71,10 +71,13 @@ export default function FormateursPage() {
   };
 
   const handleDelete = (formateurToDelete) => {
-    const updatedFormateurs = formateurs.filter(
-      (f) => f !== formateurToDelete
-    );
-    setFormateurs(updatedFormateurs);
+    const confirmDelete = window.confirm(`⚠️ Êtes-vous sûr de vouloir supprimer ${formateurToDelete.name} ?`);
+    if (confirmDelete) {
+      const updatedFormateurs = formateurs.filter(
+        (f) => f !== formateurToDelete
+      );
+      setFormateurs(updatedFormateurs);
+    }
   };
 
   return (
@@ -171,7 +174,7 @@ export default function FormateursPage() {
       </div>
 
       {/* Edit Modal */}
-{showModal && (
+    {showModal && (
     <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 backdrop-blur-sm z-50">
       <div className="bg-gradient-to-br from-white via-[#f0f3ff] to-[#e4e9ff] p-6 rounded-2xl shadow-2xl w-[90%] max-w-md border border-[#d1d5db]">
         <h2 className="text-2xl font-bold text-[#070c2c] mb-6 text-center">✏️ Modifier Formateur</h2>
