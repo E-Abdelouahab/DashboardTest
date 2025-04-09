@@ -105,7 +105,7 @@ export default function FormateursPage() {
 
       <div className="overflow-x-auto rounded-2xl shadow bg-white">
         <table className="min-w-full text-sm text-left">
-          <thead className="bg-gray-200 text-gray-700 uppercase">
+          <thead className="bg-white-200 text-gray-700 uppercase">
             <tr>
               <th className="px-6 py-3 text-center">Photo</th>
               <th className="px-6 py-3 text-center">Nom</th>
@@ -119,7 +119,7 @@ export default function FormateursPage() {
             {paginated.map((f, i) => (
               <tr key={i} className="border-b hover:bg-gray-100 transition">
                 <td className="px-6 py-4">
-                  <img src={f.img} alt="avatar" className="rounded-full w-10 h-10" />
+                  <img src={f.img} alt="avatar" className="rounded-full w-10 h-10 container mx-auto justify-center" />
                 </td>
                 <td className="px-6 py-4 font-semibold text-gray-900 text-center">{f.name}</td>
                 <td className="px-6 py-4 text-center">{f.phone}</td>
@@ -127,7 +127,7 @@ export default function FormateursPage() {
                 <td className="px-6 py-4 text-center">{f.ville
         
                 }</td>
-                <td className="px-6 py-4 flex gap-2 text-center">
+                <td className="px-6 py-4 flex gap-2 container mx-auto justify-center">
                 {/* Edit Button */}
                 <button
                   onClick={() => openEditModal(f)}
