@@ -7,8 +7,8 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 const AnalyticsDonutChart = () => {
   const tabs = ["Formateurs", "Entreprises", "Formations"];
   const filters = ["ce mois ci", "mois dernier", "cette année", "année dernière"];
-  const [subfilters, setSubfilters] = useState(["Secteur d'activité", "Âge", "Ville"]); // Default subfilters
-  const colors = ["#000", "#4962F5", "#f55bdd"];
+  const [subfilters, setSubfilters] = useState(["Âge", "Ville"]); // Default subfilters
+  const colors = ["#f79b6b", "#4962F5", "#f55bdd"];
 
   const [chartData, setChartData] = useState({
     Formateurs: [],
@@ -17,7 +17,7 @@ const AnalyticsDonutChart = () => {
   });
   const [selectedTab, setSelectedTab] = useState("Formateurs");
   const [selectedPeriod, setSelectedPeriod] = useState("ce mois ci");
-  const [selectedSubfilter, setSelectedSubfilter] = useState("Secteur d'activité");
+  const [selectedSubfilter, setSelectedSubfilter] = useState("Ville");
   const [filterDropdown, setFilterDropdown] = useState(false);
   const [subfilterDropdown, setSubfilterDropdown] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState(null);
@@ -74,8 +74,8 @@ const AnalyticsDonutChart = () => {
   const updateSubfilters = (tabData) => {
     if (!tabData) return;
 
-    // Dynamically update subfilters based on available data, here assuming "Secteur d'activité" and "Âge" are common
-    setSubfilters(["Secteur d'activité", "Âge", "Ville"]);
+    // Dynamically update subfilters based on available data, here assuming "Ville" and "Âge" are common
+    setSubfilters(["Âge", "Ville"]);
   };
 
   return (
