@@ -2,8 +2,15 @@
 import StatCard from "@/components/Dashboard/StatCard";
 import AnalyticsDonutChart from "@/components/Dashboard/AnalyticsDonutChart";
 import NegotiationDonutChart from "@/components/Dashboard/NegotiationDonutChart";
+import { useState,  } from 'react';
 
 export default function Home() {
+  const [selectedPeriod, setSelectedPeriod] = useState("ce mois ci");
+
+  const handlePeriodChange = (newPeriod) => {
+    setSelectedPeriod(newPeriod);
+    // You can also fetch new data or trigger effects here
+  };
   return (
     <div className="space-y-8">
       <div className="min-h-screen">
@@ -14,12 +21,16 @@ export default function Home() {
               value="15 000"
               percentage={11.05}
               color="text-green-500 border-3 border-green-600"
+              period={selectedPeriod}
+              onPeriodChange={handlePeriodChange}
             />
             <StatCard
               label="Entreprises"
               value="13 452"
               percentage={11.05}
               color="text-green-500 border-3 border-sky-500"
+              period={selectedPeriod}
+              onPeriodChange={handlePeriodChange}
               
             />
             <StatCard
@@ -27,6 +38,8 @@ export default function Home() {
               value="13 452"
               percentage={11.05}
               color="text-green-500 border-3 border-fuchsia-500"
+              period={selectedPeriod}
+              onPeriodChange={handlePeriodChange}
            
             />
           </div>
