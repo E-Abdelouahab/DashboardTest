@@ -1,46 +1,67 @@
 "use client";
+import { useState, useEffect } from "react";
 import StatCard from "@/components/Dashboard/StatCard";
 import AnalyticsDonutChart from "@/components/Dashboard/AnalyticsDonutChart";
 import NegotiationDonutChart from "@/components/Dashboard/NegotiationDonutChart";
-import { useState,  } from 'react';
+import PeriodSelector from "@/components/Dashboard/PeriodSelector";
 
 export default function Home() {
-  const [selectedPeriod, setSelectedPeriod] = useState("ce mois ci");
+  const [data, setData] = useState(null);
+  const [selectedPeriod1, setSelectedPeriod1] = useState("cemois");
+  const [selectedPeriod2, setSelectedPeriod2] = useState("cemois");
+  const [selectedPeriod3, setSelectedPeriod3] = useState("cemois");
 
-  const handlePeriodChange = (newPeriod) => {
-    setSelectedPeriod(newPeriod);
-    // You can also fetch new data or trigger effects here
-  };
+  useEffect(() => {
+    fetch("https://my-json-server.typicode.com/E-Abdelouahab/mockjson/dashboard3")
+      .then((res) => res.json())
+      .then((json) => setData(json))
+      .catch((err) => console.error("Error fetching data:", err));
+  }, []);
+
+  if (!data) return <div>Loading...</div>;
+
+  const formateurStats = data.Formateurs[selectedPeriod1]?.[0] || { total: 0, percent: 0 };
+  const entrepriseStats = data.Entreprises[selectedPeriod2]?.[0] || { total: 0, percent: 0 };
+  const formationStats = data.Formations[selectedPeriod3]?.[0] || { total: 0, percent: 0 };
+const onChangeGlobalPeriod = (period) => {
+    setSelectedPeriod1(period);
+    setSelectedPeriod2(period);
+    setSelectedPeriod3(period);
+  }
   return (
     <div className="space-y-8">
       <div className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+          {/* Bouton de sélection de période */}
+          <div className="flex justify-end mb-6">
+            <PeriodSelector value={selectedPeriod1} onChange={onChangeGlobalPeriod} />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <StatCard
-              label="Formateur"
-              value="15 000"
-              percentage={11.05}
+              label="Formateurs"
+              value={formateurStats.total.toLocaleString()}
+              percentage={formateurStats.percent}
               color="text-green-500 border-3 border-green-600"
-              period={selectedPeriod}
-              onPeriodChange={handlePeriodChange}
+              period={selectedPeriod1}
+              onPeriodChange={setSelectedPeriod1}
             />
             <StatCard
               label="Entreprises"
-              value="13 452"
-              percentage={11.05}
+              value={entrepriseStats.total.toLocaleString()}
+              percentage={entrepriseStats.percent}
               color="text-green-500 border-3 border-sky-500"
-              period={selectedPeriod}
-              onPeriodChange={handlePeriodChange}
-              
+              period={selectedPeriod2}
+              onPeriodChange={setSelectedPeriod2}
             />
             <StatCard
               label="Formations"
-              value="13 452"
-              percentage={11.05}
+              value={formationStats.total.toLocaleString()}
+              percentage={formationStats.percent}
               color="text-green-500 border-3 border-fuchsia-500"
-              period={selectedPeriod}
-              onPeriodChange={handlePeriodChange}
-           
+              period={selectedPeriod3}
+              onPeriodChange={setSelectedPeriod3}
             />
           </div>
 
