@@ -1,3 +1,5 @@
+"use client"
+
 // export default function Sidebar() {
 //     return (
 //       <aside className="w-64 h-screen bg-[#070c2c] text-white fixed left-0 top-0 p-6 shadow-lg">
@@ -35,7 +37,19 @@
 //       </aside>
 //     );
 //   }
+import { useState,useEffect } from 'react';
+
 export default function Sidebar() {
+  const [activeLink, setActiveLink] = useState('/');
+  
+  useEffect(() => {
+    setActiveLink(window.location.pathname);
+  }, []);
+
+  const handleLinkClick = (href) => {
+    setActiveLink(href); // Set the active link
+  };
+
   return (
     <aside className="w-72 h-screen bg-[#070c2c] text-white fixed left-0 top-0 p-6 shadow-lg">
       <h1 className="text-2xl font-bold mb-10 flex items-center gap-2">
@@ -51,16 +65,17 @@ export default function Sidebar() {
       {/* Menu */}
       <nav className="flex flex-col gap-2">
         {[
-          { name: "Aperçu", href: "/", icon: "📊", active: true },
+          { name: "Aperçu", href: "/", icon: "📊" },
           { name: "Formateurs", href: "/formateurs", icon: "🧑‍🏫" },
           { name: "Entreprises", href: "/entreprises", icon: "🏢" },
           { name: "Formations", href: "/formations", icon: "📚" },
-        ].map(({ name, href, icon, active }) => (
+        ].map(({ name, href, icon }) => (
           <a
             key={name}
             href={href}
+            onClick={() => handleLinkClick(href)}
             className={`flex items-center justify-between gap-3 p-3 rounded-xl transition-all ${
-              active ? "bg-[#3d5be3]" : "bg-[#0e133a] hover:bg-[#1d2a67]"
+              activeLink === href ? "bg-[#3d5be3]" : "bg-[#0e133a] hover:bg-[#1d2a67]"
             }`}
           >
             <div className="flex items-center gap-3">
@@ -86,7 +101,10 @@ export default function Sidebar() {
           <a
             key={name}
             href={href}
-            className="flex items-center justify-between gap-3 p-3 bg-[#0e133a] hover:bg-[#1d2a67] rounded-xl transition-all"
+            onClick={() => handleLinkClick(href)}
+            className={`flex items-center justify-between gap-3 p-3 rounded-xl transition-all ${
+              activeLink === href ? "bg-[#3d5be3]" : "bg-[#0e133a] hover:bg-[#1d2a67]"
+            }`}
           >
             <div className="flex items-center gap-3">
               <span className="text-lg">{icon}</span>
@@ -104,7 +122,10 @@ export default function Sidebar() {
 
       <a
         href="#"
-        className="flex items-center justify-between gap-3 p-3 bg-[#0e133a] hover:bg-[#1d2a67] rounded-xl transition-all"
+        onClick={() => handleLinkClick("#")}
+        className={`flex items-center justify-between gap-3 p-3 rounded-xl transition-all ${
+          activeLink === "#" ? "bg-[#3d5be3]" : "bg-[#0e133a] hover:bg-[#1d2a67]"
+        }`}
       >
         <div className="flex items-center gap-3">
           <span className="text-lg">📰</span>
