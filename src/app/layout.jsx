@@ -13,9 +13,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="fr">
       <body className="m-4 min-h-screen flex flex-col md:flex-row">
-        <Sidebar />
- 
-        <div className="flex-1 flex flex-col ml-64">
+        <Sidebar className="md:block w-full md:w-64" />
+
+        <div className="flex-1 flex flex-col">
           <Topbar />
 
           <main className="p-6 mt-[5px]">{children}</main>
@@ -24,4 +24,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-

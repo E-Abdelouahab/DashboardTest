@@ -9,11 +9,11 @@ export default function PeriodSelector({ value, onChange }) {
   ];
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block w-full sm:w-auto">
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="appearance-none bg-[#1E2A78] text-white text-sm py-2 px-4 pr-8 rounded-md focus:outline-none"
+        className="appearance-none bg-[#1E2A78] text-white text-sm py-2 px-4 pr-8 rounded-md focus:outline-none w-full sm:w-auto"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value} className="text-black">

@@ -21,23 +21,24 @@ export default function TopBar() {
   return (
     <header className="flex justify-between items-center w-full px-6 py-4 bg-white border-b border-gray-100">
       {/* Left: Greeting */}
-      <div className="m-4 text-lg font-medium text-gray-800">
+      <div className="m-4 text-lg font-medium text-gray-800 text-center md:text-left">
         Bonjour <span className="italic text-[#3B5EFF]">Badre Zouhir</span>
       </div>
 
       {/* Right: Profile + Dropdown */}
-      <div className="relative" ref={dropdownRef}>
+      <div className="relative flex items-center md:ml-auto" ref={dropdownRef}>
         <div
           className="bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 p-[1px] rounded-full cursor-pointer"
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
           <div className="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
-          <img src="/avatar.jpg" alt="User Avatar" className="w-8 h-8 rounded-full object-cover mr-3" />
+            <img src="/avatar.jpg" alt="User Avatar" className="w-8 h-8 rounded-full object-cover mr-3" />
 
-            <div className="text-sm leading-tight">
+            <div className="hidden md:block text-sm leading-tight">
               <div className="font-semibold text-gray-800">Badre Zouhir</div>
               <div className="text-gray-500 text-xs">badre@scenius-lab.com</div>
             </div>
+
             <ChevronDown className="w-4 h-4 ml-2 text-gray-500" />
           </div>
         </div>

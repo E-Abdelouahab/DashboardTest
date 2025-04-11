@@ -21,7 +21,6 @@ export default function StatCard({
 
   const isPositive = (percentage || 0) > 0;
 
-  // Human-readable to API key mapping
   const periodKeyMapping = {
     "ce mois ci": "cemois",
     "mois dernier": "moisdernier",
@@ -29,7 +28,6 @@ export default function StatCard({
     "année dernière": "anneederniere",
   };
 
-  // Reverse mapping: API key to human-readable label
   const keyToLabelMapping = Object.entries(periodKeyMapping).reduce(
     (acc, [label, key]) => {
       acc[key] = label;
@@ -38,7 +36,6 @@ export default function StatCard({
     {}
   );
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -66,8 +63,10 @@ export default function StatCard({
   const borderColor = color || (isPositive ? "border-green-300" : "border-red-300");
 
   return (
-    <div className={`bg-white rounded-xl shadow-md p-6 w-full relative ${borderColor} border`}>
-      <div className="flex justify-between items-center mb-6">
+    <div
+      className={`bg-white rounded-xl shadow-md p-6 w-full relative ${borderColor} border`}
+    >
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
         <div className="flex items-center space-x-2">
           <div className={`w-3 h-3 rounded-full ${accentColor}`}></div>
           <p className="text-sm font-medium text-gray-700">{label}</p>
@@ -137,9 +136,9 @@ export default function StatCard({
         </div>
       </div>
 
-      <div className="flex items-end justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between">
         <div className="space-y-1">
-          <h2 className="text-4xl font-bold text-gray-800">{value}</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">{value}</h2>
           <div className="flex items-center space-x-2 mt-2">
             <span
               className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${

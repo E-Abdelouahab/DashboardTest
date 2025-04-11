@@ -79,15 +79,15 @@ const AnalyticsDonutChart = () => {
   };
 
   return (
-    <div className="bg-white shadow-md  rounded-sm p-6">
+    <div className="bg-white shadow-md rounded-sm p-4 sm:p-6">
       {/* Tabs */}
-      <div className="flex justify-between items-center mb-6">
-        <div className="flex space-x-6">
+      <div className="flex flex-wrap justify-between items-center mb-4 sm:mb-6">
+        <div className="flex flex-wrap space-x-4 sm:space-x-6">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedTab(tab)}
-              className={`pb-2 text-lg font-semibold ${
+              className={`pb-2 text-sm sm:text-lg font-semibold ${
                 selectedTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'
               }`}
             >
@@ -97,10 +97,10 @@ const AnalyticsDonutChart = () => {
         </div>
 
         {/* Period Dropdown */}
-        <div className="relative">
+        <div className="relative mt-2 sm:mt-0">
           <button
             onClick={() => setFilterDropdown(!filterDropdown)}
-            className="bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-700 flex items-center"
+            className="bg-gray-100 px-3 py-2 rounded-full text-xs sm:text-sm text-gray-700 flex items-center"
           >
             {selectedPeriod}
             <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
@@ -108,7 +108,7 @@ const AnalyticsDonutChart = () => {
             </svg>
           </button>
           {filterDropdown && (
-            <div className="absolute right-0 bg-white mt-2 shadow rounded w-40 z-10">
+            <div className="absolute right-0 bg-white mt-2 shadow rounded w-32 sm:w-40 z-10">
               {filters.map((f) => (
                 <button
                   key={f}
@@ -116,7 +116,7 @@ const AnalyticsDonutChart = () => {
                     setSelectedPeriod(f);
                     setFilterDropdown(false);
                   }}
-                  className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                  className="block w-full px-4 py-2 text-left text-xs sm:text-sm hover:bg-gray-100"
                 >
                   {f}
                 </button>
@@ -127,12 +127,12 @@ const AnalyticsDonutChart = () => {
       </div>
 
       {/* Chart and subfilter */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-center justify-between">
         {/* Left dropdown (subfilter) */}
-        <div className="relative w-1/4">
+        <div className="relative w-full sm:w-1/4 mb-4 sm:mb-0">
           <button
             onClick={() => setSubfilterDropdown(!subfilterDropdown)}
-            className="bg-gray-100 px-4 py-2 rounded-md text-sm text-gray-700 w-full text-left flex justify-between items-center"
+            className="bg-gray-100 px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 w-full text-left flex justify-between items-center"
           >
             {selectedSubfilter}
             <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
@@ -148,7 +148,7 @@ const AnalyticsDonutChart = () => {
                     setSelectedSubfilter(f);
                     setSubfilterDropdown(false);
                   }}
-                  className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+                  className="block w-full px-4 py-2 text-left text-xs sm:text-sm hover:bg-gray-100"
                 >
                   {f}
                 </button>
@@ -158,7 +158,7 @@ const AnalyticsDonutChart = () => {
         </div>
 
         {/* Donut Chart */}
-        <div className="w-2/3 h-64">
+        <div className="w-full sm:w-2/3 h-64">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
@@ -193,26 +193,26 @@ const AnalyticsDonutChart = () => {
         </div>
 
         {/* Stats */}
-        <div className="text-center w-1/3">
-          <div className="text-blue-600 text-sm font-medium flex justify-center items-center gap-1">
+        <div className="text-center w-full sm:w-1/3 mt-4 sm:mt-0">
+          <div className="text-blue-600 text-xs sm:text-sm font-medium flex justify-center items-center gap-1">
             <svg width="16" height="16" fill="none">
               <path d="M6 9l4-4 4 4" stroke="currentColor" strokeWidth="2" />
             </svg>
             +16%
           </div>
-          <div className="text-2xl font-bold">+ 50</div>
+          <div className="text-xl sm:text-2xl font-bold">+ 50</div>
         </div>
       </div>
 
       {/* Legend */}
-      <div className="flex justify-center mt-4 space-x-6">
+      <div className="flex flex-wrap justify-center mt-4 space-x-4 sm:space-x-6">
         {chartData[selectedTab].map((item, index) => (
           <div key={index} className="flex items-center gap-2">
             <span
               className="w-3 h-3 rounded-full"
               style={{ backgroundColor: colors[index] }}
             />
-            <span className="text-sm text-gray-700">{item.name}</span>
+            <span className="text-xs sm:text-sm text-gray-700">{item.name}</span>
           </div>
         ))}
       </div>
