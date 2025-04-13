@@ -108,7 +108,7 @@ export default function FormateursPage() {
 
       <div className="overflow-x-auto rounded-2xl shadow bg-white">
         <table className="min-w-full text-sm text-left">
-          <thead className="bg-white-200 text-gray-700 uppercase">
+          <thead className="bg-[#070c2c] text-white  uppercase">
             <tr>
               <th className="px-6 py-3 text-center">Photo</th>
               <th className="px-6 py-3 text-center">Nom</th>

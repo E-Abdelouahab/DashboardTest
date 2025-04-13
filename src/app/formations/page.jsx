@@ -102,19 +102,19 @@ export default function Formations() {
                     placeholder="Rechercher par nom..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full max-w-md px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 "
                 />
             </div>
 
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white shadow-md rounded-lg">
-                    <thead className="bg-gray-100">
+                    <thead className="bg-[#070c2c] text-white  uppercase">
                         <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Website</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase ">Name</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase ">Phone</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase ">Website</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase ">Date</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-white uppercase ">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
