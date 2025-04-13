@@ -4,12 +4,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function FormateursPage() {
+  // États principaux
   const [formateurs, setFormateurs] = useState([]);
   const [search, setSearch] = useState("");
   const [villeFilter, setVilleFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 5;
+
+  // États pour le modal de modification
   const [showModal, setShowModal] = useState(false);
   const [currentFormateur, setCurrentFormateur] = useState(null);
   const [updatedFormateur, setUpdatedFormateur] = useState({
@@ -20,6 +23,7 @@ export default function FormateursPage() {
     img: "",
   });
 
+  // Récupération des données depuis l'API externe
   useEffect(() => {
     setLoading(true);
     axios.get("https://randomuser.me/api/?results=30").then((res) => {
@@ -35,6 +39,7 @@ export default function FormateursPage() {
     });
   }, []);
 
+  // Affichage du loader pendant le chargement
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -43,14 +48,16 @@ export default function FormateursPage() {
     );
   }
 
+  // Filtrage par recherche et ville
   const filtered = formateurs.filter((f) => {
     const matchSearch =
       f.name.toLowerCase().includes(search.toLowerCase()) ||
       f.email.toLowerCase().includes(search.toLowerCase());
-    const matchvill = villeFilter === "all" || f.ville === villeFilter;
-    return matchSearch && matchvill;
+    const matchVille = villeFilter === "all" || f.ville === villeFilter;
+    return matchSearch && matchVille;
   });
 
+  // Calcul des villes uniques pour le filtre
   const villes = ["all", ...new Set(formateurs.map((f) => f.ville))];
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const paginated = filtered.slice(
@@ -58,19 +65,23 @@ export default function FormateursPage() {
     currentPage * itemsPerPage
   );
 
+  // Changement de page
   const handlePageChange = (page) => setCurrentPage(page);
 
+  // Ouvre le modal avec les infos à modifier
   const openEditModal = (formateur) => {
     setCurrentFormateur(formateur);
     setUpdatedFormateur({ ...formateur });
     setShowModal(true);
   };
 
+  // Gère les changements dans le formulaire de modification
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUpdatedFormateur((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Sauvegarde les modifications
   const handleSubmit = (e) => {
     e.preventDefault();
     const updatedFormateurs = formateurs.map((f) =>
@@ -80,6 +91,7 @@ export default function FormateursPage() {
     setShowModal(false);
   };
 
+  // Supprime un formateur avec confirmation
   const handleDelete = (formateurToDelete) => {
     const confirmDelete = window.confirm(
       `\u26A0\uFE0F \u00CAtes-vous s\u00FBr de vouloir supprimer ${formateurToDelete.name} ?`
@@ -92,10 +104,12 @@ export default function FormateursPage() {
 
   return (
     <div className="min-h-screen p-3" style={{ backgroundColor: "#f0f3ff" }}>
+      {/* Titre */}
       <h1 className="text-[#070c2c] text-xl md:text-2xl font-bold mb-4 md:mb-6">
         Liste des formateurs
       </h1>
 
+      {/* Filtres de recherche et de ville */}
       <div className="mb-4 flex flex-col sm:flex-row justify-center gap-2 ">
         <input
           type="text"
@@ -118,7 +132,7 @@ export default function FormateursPage() {
         </select>
       </div>
 
-      {/* Card Layout for Mobile */}
+      {/* Affichage mobile en cartes */}
       <div className="block sm:hidden">
         {paginated.map((f, i) => (
           <div key={i} className="flex flex-col items-center mb-4 p-4 bg-white rounded-lg shadow-md">
@@ -147,7 +161,7 @@ export default function FormateursPage() {
         ))}
       </div>
 
-      {/* Table Layout for Larger Screens */}
+      {/* Affichage bureau en tableau */}
       <div className="hidden sm:block overflow-x-auto rounded-2xl shadow bg-white">
         <table className="min-w-full text-sm text-left">
           <thead className="bg-[#070c2c] text-white uppercase">
@@ -201,22 +215,67 @@ export default function FormateursPage() {
         </table>
       </div>
 
+      {/* Pagination améliorée */}
       <div className="flex justify-center mt-6">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-          <button
-            key={n}
-            onClick={() => handlePageChange(n)}
-            className={`mx-1 px-4 py-2 rounded-lg border transition ${
-              currentPage === n
-                ? "bg-[#070c2c] text-white"
-                : "bg-white text-[#070c2c] border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
-            }`}
-          >
-            {n}
-          </button>
-        ))}
+        <button
+          onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+          className={`mx-1 px-3 py-2 rounded-lg text-sm font-medium transition ${
+            currentPage === 1
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-white text-[#070c2c] border border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
+          }`}
+        >
+          ← Précédent
+        </button>
+
+        {Array.from({ length: totalPages }, (_, i) => i + 1)
+          .filter((page) => {
+            return (
+              page === 1 ||
+              page === totalPages ||
+              (page >= currentPage - 2 && page <= currentPage + 2)
+            );
+          })
+          .reduce((acc, page, i, arr) => {
+            if (i > 0 && page - arr[i - 1] > 1) {
+              acc.push({ type: "ellipsis", key: `ellipsis-${page}` });
+            }
+            acc.push({ type: "page", number: page, key: `page-${page}` });
+            return acc;
+          }, [])
+          .map((item) =>
+            item.type === "ellipsis" ? (
+              <span key={item.key} className="px-2 py-2 text-gray-500">
+                ...
+              </span>
+            ) : (
+              <button
+                key={item.key}
+                onClick={() => handlePageChange(item.number)}
+                className={`mx-1 px-4 py-2 rounded-lg font-medium transition transform hover:scale-105 duration-200 ${
+                  currentPage === item.number
+                    ? "bg-[#070c2c] text-white shadow-lg"
+                    : "bg-white text-[#070c2c] border border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
+                }`}
+              >
+                {item.number}
+              </button>
+            )
+          )}
+
+        <button
+          onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+          className={`mx-1 px-3 py-2 rounded-lg text-sm font-medium transition ${
+            currentPage === totalPages
+              ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+              : "bg-white text-[#070c2c] border border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
+          }`}
+        >
+          Suivant →
+        </button>
       </div>
 
+      {/* Modal de modification */}
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-40 backdrop-blur-sm z-50">
           <div className="bg-gradient-to-br from-white via-[#f0f3ff] to-[#e4e9ff] p-6 rounded-2xl shadow-2xl w-[90%] max-w-md border border-[#d1d5db]">

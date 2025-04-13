@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
@@ -90,7 +90,7 @@ export default function Entreprises() {
     };
 
     // Pagination handler
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
 
     // =========== Helper Functions ===========
     // Filter data based on search term
@@ -103,6 +103,9 @@ export default function Entreprises() {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+
+    // Get total pages
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     // =========== Loading State ===========
     if (loading) {
@@ -167,11 +170,11 @@ export default function Entreprises() {
                 <table className="w-full">
                     <thead className="bg-[#070c2c] text-white uppercase">
                         <tr className="text-white-600">
-                            <th className="px-6 py-4 text-left font-semibold">Entreprise</th>
-                            <th className="px-6 py-4 text-left font-semibold">Téléphone</th>
-                            <th className="px-6 py-4 text-left font-semibold">Email</th>
-                            <th className="px-6 py-4 text-left font-semibold">Web</th>
-                            <th className="px-6 py-4 text-right font-semibold">Actions</th>
+                            <th className="px-6 py-4 text-center font-semibold">Entreprise</th>
+                            <th className="px-6 py-4 text-center font-semibold">Téléphone</th>
+                            <th className="px-6 py-4 text-center font-semibold">Email</th>
+                            <th className="px-6 py-4 text-center font-semibold">Web</th>
+                            <th className="px-6 py-4 text-center font-semibold">Actions</th>
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -211,19 +214,63 @@ export default function Entreprises() {
 
             {filteredData.length > 0 && (
                 <div className="mt-6 flex justify-center space-x-2">
-                    {Array.from({ length: Math.ceil(filteredData.length / itemsPerPage) }).map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => paginate(i + 1)}
-                            className={`px-4 py-2 rounded-lg transition-colors ${
-                                currentPage === i + 1
-                                    ? 'bg-[#070c2c] text-white shadow-md'
-                                    : 'bg-gray-200 hover:bg-gray-300'
-                            }`}
-                        >
-                            {i + 1}
-                        </button>
-                    ))}
+                    {/* Pagination améliorée */}
+                    <button
+                        onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+                        className={`mx-1 px-3 py-2 rounded-lg text-sm font-medium transition ${
+                            currentPage === 1
+                                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                : "bg-white text-[#070c2c] border border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
+                        }`}
+                    >
+                        ← Précédent
+                    </button>
+
+                    {Array.from({ length: totalPages }, (_, i) => i + 1)
+                        .filter((page) => {
+                            return (
+                                page === 1 ||
+                                page === totalPages ||
+                                (page >= currentPage - 2 && page <= currentPage + 2)
+                            );
+                        })
+                        .reduce((acc, page, i, arr) => {
+                            if (i > 0 && page - arr[i - 1] > 1) {
+                                acc.push({ type: "ellipsis", key: `ellipsis-${page}` });
+                            }
+                            acc.push({ type: "page", number: page, key: `page-${page}` });
+                            return acc;
+                        }, [])
+                        .map((item) =>
+                            item.type === "ellipsis" ? (
+                                <span key={item.key} className="px-2 py-2 text-gray-500">
+                                    ...
+                                </span>
+                            ) : (
+                                <button
+                                    key={item.key}
+                                    onClick={() => handlePageChange(item.number)}
+                                    className={`mx-1 px-4 py-2 rounded-lg font-medium transition transform hover:scale-105 duration-200 ${
+                                        currentPage === item.number
+                                            ? "bg-[#070c2c] text-white shadow-lg"
+                                            : "bg-white text-[#070c2c] border border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
+                                    }`}
+                                >
+                                    {item.number}
+                                </button>
+                            )
+                        )}
+
+                    <button
+                        onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+                        className={`mx-1 px-3 py-2 rounded-lg text-sm font-medium transition ${
+                            currentPage === totalPages
+                                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                : "bg-white text-[#070c2c] border border-[#070c2c] hover:bg-[#070c2c] hover:text-white"
+                        }`}
+                    >
+                        Suivant →
+                    </button>
                 </div>
             )}
 
