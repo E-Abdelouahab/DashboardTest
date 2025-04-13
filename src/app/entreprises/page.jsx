@@ -165,8 +165,8 @@ export default function Entreprises() {
 
             <div className="hidden sm:block overflow-x-auto rounded-xl shadow-lg border border-gray-100 bg-white">
                 <table className="w-full">
-                    <thead className="bg-gray-50">
-                        <tr className="text-gray-600">
+                    <thead className="bg-[#070c2c] text-white uppercase">
+                        <tr className="text-white-600">
                             <th className="px-6 py-4 text-left font-semibold">Entreprise</th>
                             <th className="px-6 py-4 text-left font-semibold">Téléphone</th>
                             <th className="px-6 py-4 text-left font-semibold">Email</th>
