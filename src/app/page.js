@@ -10,24 +10,39 @@ export default function Home() {
   const [selectedPeriod1, setSelectedPeriod1] = useState("cemois");
   const [selectedPeriod2, setSelectedPeriod2] = useState("cemois");
   const [selectedPeriod3, setSelectedPeriod3] = useState("cemois");
+  const [loading, setLoading] = useState(true); // Adding loading state
 
   useEffect(() => {
     fetch("https://my-json-server.typicode.com/E-Abdelouahab/mockjson/dashboard3")
       .then((res) => res.json())
-      .then((json) => setData(json))
-      .catch((err) => console.error("Error fetching data:", err));
+      .then((json) => {
+        setData(json);
+        setLoading(false); // Set loading to false once data is fetched
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+        setLoading(false); // Handle error and stop loading
+      });
   }, []);
 
-  if (!data) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    ); // Spinner while data is loading
+  }
 
   const formateurStats = data.Formateurs[selectedPeriod1]?.[0] || { total: 0, percent: 0 };
   const entrepriseStats = data.Entreprises[selectedPeriod2]?.[0] || { total: 0, percent: 0 };
   const formationStats = data.Formations[selectedPeriod3]?.[0] || { total: 0, percent: 0 };
-const onChangeGlobalPeriod = (period) => {
+
+  const onChangeGlobalPeriod = (period) => {
     setSelectedPeriod1(period);
     setSelectedPeriod2(period);
     setSelectedPeriod3(period);
-  }
+  };
+
   return (
     <div className="space-y-8">
       <div className="min-h-screen">

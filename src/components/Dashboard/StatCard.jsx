@@ -80,7 +80,7 @@ export default function StatCard({
             <div className="bg-blue-50 p-1 rounded-lg mr-2">
               <Calendar className="h-4 w-4 text-blue-500" />
             </div>
-            <span className="text-sm font-medium mr-1 capitalize">
+            <span className="text-sm font-medium mr-1">
               {keyToLabelMapping[period] || period}
             </span>
             <div
@@ -121,7 +121,7 @@ export default function StatCard({
                           }`}
                         />
                       </div>
-                      <span className="capitalize">{label}</span>
+                      <span className="">{label}</span>
                     </div>
                     {period === key && (
                       <div className="bg-white rounded-full p-0.5">
