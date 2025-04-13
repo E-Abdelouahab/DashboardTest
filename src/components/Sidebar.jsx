@@ -26,9 +26,9 @@ export default function Sidebar() {
       </button>
 
       <aside
-        className={`w-72 h-screen bg-[#070c2c] text-white fixed top-0 p-6 shadow-lg transition-transform transform z-[50] ${
+        className={`w-72 h-[100dvh] bg-[#070c2c] text-white fixed top-0 p-6 shadow-lg transition-transform transform z-[50] overflow-y-auto ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static`}
+        } lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen`}
       >
         <h1 className="text-2xl font-bold mb-10 flex items-center gap-2">
           <span className="text-white">🎓</span>

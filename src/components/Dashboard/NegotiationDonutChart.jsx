@@ -75,7 +75,7 @@ const NegotiationDonutChart = () => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-sm p-6">
+    <div className="bg-white shadow-md rounded-sm p-4">
      {/* Tabs + Period Dropdown aligné à droite */}
 <div className="flex justify-between items-center mb-6">
   {/* Tabs à gauche */}
@@ -84,7 +84,7 @@ const NegotiationDonutChart = () => {
       <button
         key={tab}
         onClick={() => setSelectedTab(tab)}
-        className={`pb-2 text-sm sm:text-lg font-semibold ${
+        className={`pb-2 text-sm sm:text-sm font-semibold ${
           selectedTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'
         }`}
       >

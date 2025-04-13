@@ -79,15 +79,15 @@ const AnalyticsDonutChart = () => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-sm p-6">
+    <div className="bg-white shadow-md rounded-sm p-4">
       {/* Tabs */}
-      <div className="flex flex-wrap justify-between items-center mb-6">
-        <div className="flex flex-wrap space-x-4">
+      <div className="flex flex-nowrap justify-between items-center mb-6">
+        <div className="flex flex-nowrap space-x-2">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedTab(tab)}
-              className={`pb-2 text-sm sm:text-lg font-semibold ${
+              className={`pb-2 text-sm sm:text-sm font-semibold ${
                 selectedTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'
               }`}
             >
