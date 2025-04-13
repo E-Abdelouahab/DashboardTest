@@ -76,51 +76,52 @@ const NegotiationDonutChart = () => {
 
   return (
     <div className="bg-white shadow-md rounded-sm p-6">
-      {/* Tabs */}
-      <div className="flex flex-wrap justify-between items-center mb-6">
-        <div className="flex flex-wrap space-x-4">
-          {tabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setSelectedTab(tab)}
-              className={`pb-2 text-sm sm:text-lg font-semibold ${
-                selectedTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+     {/* Tabs + Period Dropdown aligné à droite */}
+<div className="flex justify-between items-center mb-6">
+  {/* Tabs à gauche */}
+  <div className="flex space-x-4">
+    {tabs.map((tab) => (
+      <button
+        key={tab}
+        onClick={() => setSelectedTab(tab)}
+        className={`pb-2 text-sm sm:text-lg font-semibold ${
+          selectedTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'
+        }`}
+      >
+        {tab}
+      </button>
+    ))}
+  </div>
 
-        {/* Period Dropdown */}
-        <div className="relative mt-4 sm:mt-0">
+  {/* Period selector à droite */}
+  <div className="relative">
+    <button
+      onClick={() => setFilterDropdown(!filterDropdown)}
+      className="bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-700 flex items-center"
+    >
+      {selectedPeriod}
+      <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
+        <path d="M19 9l-7 7-7-7" stroke="currentColor" strokeWidth="2" />
+      </svg>
+    </button>
+    {filterDropdown && (
+      <div className="absolute right-0 bg-white mt-2 shadow rounded w-40 z-10">
+        {filters.map((f) => (
           <button
-            onClick={() => setFilterDropdown(!filterDropdown)}
-            className="bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-700 flex items-center"
+            key={f}
+            onClick={() => {
+              setSelectedPeriod(f);
+              setFilterDropdown(false);
+            }}
+            className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
           >
-            {selectedPeriod}
-            <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
-              <path d="M19 9l-7 7-7-7" stroke="currentColor" strokeWidth="2" />
-            </svg>
+            {f}
           </button>
-          {filterDropdown && (
-            <div className="absolute right-0 bg-white mt-2 shadow rounded w-40 z-10">
-              {filters.map((f) => (
-                <button
-                  key={f}
-                  onClick={() => {
-                    setSelectedPeriod(f);
-                    setFilterDropdown(false);
-                  }}
-                  className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
-                >
-                  {f}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        ))}
       </div>
+    )}
+  </div>
+</div>
 
       {/* Chart and stats */}
       <div className="flex flex-col lg:flex-row items-center justify-between">

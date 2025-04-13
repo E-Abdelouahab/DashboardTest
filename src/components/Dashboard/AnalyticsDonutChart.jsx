@@ -79,10 +79,10 @@ const AnalyticsDonutChart = () => {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-sm p-4 sm:p-6">
+    <div className="bg-white shadow-md rounded-sm p-6">
       {/* Tabs */}
-      <div className="flex flex-wrap justify-between items-center mb-4 sm:mb-6">
-        <div className="flex flex-wrap space-x-4 sm:space-x-6">
+      <div className="flex flex-wrap justify-between items-center mb-6">
+        <div className="flex flex-wrap space-x-4">
           {tabs.map((tab) => (
             <button
               key={tab}
@@ -97,10 +97,10 @@ const AnalyticsDonutChart = () => {
         </div>
 
         {/* Period Dropdown */}
-        <div className="relative mt-2 sm:mt-0">
+        <div className="relative mt-4 sm:mt-0">
           <button
             onClick={() => setFilterDropdown(!filterDropdown)}
-            className="bg-gray-100 px-3 py-2 rounded-full text-xs sm:text-sm text-gray-700 flex items-center"
+            className="bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-700 flex items-center"
           >
             {selectedPeriod}
             <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
@@ -108,7 +108,7 @@ const AnalyticsDonutChart = () => {
             </svg>
           </button>
           {filterDropdown && (
-            <div className="absolute right-0 bg-white mt-2 shadow rounded w-32 sm:w-40 z-10">
+            <div className="absolute right-0 bg-white mt-2 shadow rounded w-40 z-10">
               {filters.map((f) => (
                 <button
                   key={f}
@@ -116,7 +116,7 @@ const AnalyticsDonutChart = () => {
                     setSelectedPeriod(f);
                     setFilterDropdown(false);
                   }}
-                  className="block w-full px-4 py-2 text-left text-xs sm:text-sm hover:bg-gray-100"
+                  className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                 >
                   {f}
                 </button>
@@ -127,7 +127,7 @@ const AnalyticsDonutChart = () => {
       </div>
 
       {/* Chart and subfilter */}
-      <div className="flex flex-col sm:flex-row items-center justify-between">
+      <div className="flex flex-col lg:flex-row items-center justify-between">
         {/* Left dropdown (subfilter) */}
         <div className="relative w-full sm:w-1/4 mb-4 sm:mb-0">
           <button
