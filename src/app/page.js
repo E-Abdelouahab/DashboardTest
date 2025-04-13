@@ -49,7 +49,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Bouton de sélection de période */}
-          <div className="flex justify-end mb-6">
+          <div className="text-sm px-3 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none w-auto">
             <PeriodSelector value={selectedPeriod1} onChange={onChangeGlobalPeriod} />
           </div>
 
