@@ -43,14 +43,15 @@ src/
 ## Getting Started
 
 ### Prerequisites
-- Node.js (version 16.x or higher)
-- npm or yarn
+- Node.js (version 16.x or higher recommended)
+- npm (version 8.x or higher) or yarn (version 1.22.x or higher)
+- Git for version control
 
 ### Installation
 1. Clone the repository
    ```
-   git clone https://github.com/your-username/training-platform.git
-   cd training-platform
+   git clone https://github.com/E-Abdelouahab/DashboardTest.git
+   cd DashboardTest
    ```
 
 2. Install dependencies
