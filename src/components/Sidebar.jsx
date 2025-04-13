@@ -1,18 +1,21 @@
-"use client"
+"use client";
 
 import { useState, useEffect } from 'react';
 
 export default function Sidebar() {
+  // State for active link and mobile sidebar open/close state
   const [activeLink, setActiveLink] = useState('/');
   const [isOpen, setIsOpen] = useState(false);
 
+  // Set active link on page load
   useEffect(() => {
     setActiveLink(window.location.pathname);
   }, []);
 
+  // Handle the click on a link, set active link and close sidebar (mobile)
   const handleLinkClick = (href) => {
     setActiveLink(href); // Set the active link
-    setIsOpen(false); // Close the sidebar on mobile after clicking a link
+    setIsOpen(false); // Close sidebar on mobile
   };
 
   return (
@@ -25,11 +28,13 @@ export default function Sidebar() {
         {isOpen ? '✖' : '☰'}
       </button>
 
+      {/* Sidebar */}
       <aside
         className={`w-72 h-[100dvh] bg-[#070c2c] text-white fixed top-0 p-6 shadow-lg transition-transform transform z-[50] overflow-y-auto ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen`}
       >
+        {/* Brand and Logo */}
         <h1 className="text-2xl font-bold mb-10 flex items-center gap-2">
           <span className="text-white">🎓</span>
           <span className="bg-gradient-to-r from-purple-400 to-blue-500 text-transparent bg-clip-text">
@@ -37,12 +42,12 @@ export default function Sidebar() {
           </span>
         </h1>
 
-        {/* Section Title */}
+        {/* Section Title for Platform Data */}
         <div className="text-xs font-semibold text-center text-white/80 mb-3 border border-transparent rounded-full bg-gradient-to-r from-purple-400 to-blue-500 p-[1px]">
           <div className="bg-[#070c2c] rounded-full py-1 px-4">Scenius Platform Data</div>
         </div>
 
-        {/* Menu */}
+        {/* Main Menu Links */}
         <nav className="flex flex-col gap-2">
           {[
             { name: 'Aperçu', href: '/', icon: '📊' },
@@ -115,7 +120,7 @@ export default function Sidebar() {
         </a>
       </aside>
 
-      {/* Overlay for mobile */}
+      {/* Overlay for Mobile Sidebar */}
       {isOpen && (
         <div
           onClick={() => setIsOpen(false)}

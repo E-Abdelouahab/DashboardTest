@@ -6,7 +6,7 @@ import Topbar from "@/components/Topbar";
 
 export const metadata = {
   title: "Dashboard",
-  description: "Admin dashboard",
+  description: "Test dashboard",
 };
 
 export default function RootLayout({ children }) {

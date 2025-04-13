@@ -16,11 +16,14 @@ export default function StatCard({
   period,
   onPeriodChange,
 }) {
+  // Ref for dropdown, state for open/close
   const dropdownRef = useRef(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  // Determine if the percentage change is positive or negative
   const isPositive = (percentage || 0) > 0;
 
+  // Mappings for period keys to labels and vice versa
   const periodKeyMapping = {
     "ce mois ci": "cemois",
     "mois dernier": "moisdernier",
@@ -28,6 +31,7 @@ export default function StatCard({
     "année dernière": "anneederniere",
   };
 
+  // Reverse mapping from key to label
   const keyToLabelMapping = Object.entries(periodKeyMapping).reduce(
     (acc, [label, key]) => {
       acc[key] = label;
@@ -36,12 +40,10 @@ export default function StatCard({
     {}
   );
 
+  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsDropdownOpen(false);
       }
     }
@@ -50,8 +52,10 @@ export default function StatCard({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Toggle the dropdown menu
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
+  // Handle the selection of a period
   const selectPeriod = (selectedKey) => {
     setIsDropdownOpen(false);
     if (onPeriodChange) {
@@ -59,19 +63,21 @@ export default function StatCard({
     }
   };
 
+  // Set the accent and border colors based on percentage change
   const accentColor = isPositive ? "bg-green-500" : "bg-red-500";
   const borderColor = color || (isPositive ? "border-green-300" : "border-red-300");
 
   return (
-    <div
-      className={`bg-white rounded-xl shadow-md p-6 w-full relative ${borderColor} border`}
-    >
+    <div className={`bg-white rounded-xl shadow-md p-6 w-full relative ${borderColor} border`}>
+      {/* Header with label and dropdown */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+        {/* Label with accent circle */}
         <div className="flex items-center space-x-2">
           <div className={`w-3 h-3 rounded-full ${accentColor}`}></div>
           <p className="text-sm font-medium text-gray-700">{label}</p>
         </div>
 
+        {/* Period dropdown */}
         <div className="relative" ref={dropdownRef}>
           <button
             onClick={toggleDropdown}
@@ -83,6 +89,7 @@ export default function StatCard({
             <span className="text-sm font-medium mr-1">
               {keyToLabelMapping[period] || period}
             </span>
+            {/* Chevron icon for dropdown */}
             <div
               className={`ml-1 p-1 rounded-full bg-gray-100 group-hover:bg-blue-100 transition-all duration-200 ${
                 isDropdownOpen ? "bg-blue-100" : ""
@@ -96,6 +103,7 @@ export default function StatCard({
             </div>
           </button>
 
+          {/* Dropdown menu */}
           {isDropdownOpen && (
             <div className="absolute right-0 mt-2 w-52 rounded-2xl shadow-xl bg-white border border-gray-100 z-50">
               <div className="pt-3 pb-2 px-2 max-h-64 overflow-y-auto">
@@ -116,13 +124,12 @@ export default function StatCard({
                         }`}
                       >
                         <Calendar
-                          className={`h-4 w-4 ${
-                            period === key ? "text-white" : "text-gray-500"
-                          }`}
+                          className={`h-4 w-4 ${period === key ? "text-white" : "text-gray-500"}`}
                         />
                       </div>
-                      <span className="">{label}</span>
+                      <span>{label}</span>
                     </div>
+                    {/* Checkmark if selected */}
                     {period === key && (
                       <div className="bg-white rounded-full p-0.5">
                         <Check className="h-3 w-3 text-blue-500" />
@@ -136,15 +143,14 @@ export default function StatCard({
         </div>
       </div>
 
+      {/* Value and percentage change */}
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between">
         <div className="space-y-1">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-800">{value}</h2>
           <div className="flex items-center space-x-2 mt-2">
             <span
               className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
-                isPositive
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
+                isPositive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
               }`}
             >
               {isPositive ? (
@@ -152,9 +158,7 @@ export default function StatCard({
               ) : (
                 <TrendingDown className="w-3 h-3 mr-1" />
               )}
-              {isPositive
-                ? `+${Math.abs(percentage)}%`
-                : `-${Math.abs(percentage)}%`}
+              {isPositive ? `+${Math.abs(percentage)}%` : `-${Math.abs(percentage)}%`}
             </span>
           </div>
         </div>
