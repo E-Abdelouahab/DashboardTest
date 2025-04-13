@@ -92,7 +92,7 @@ export default function FormateursPage() {
 
   return (
     <div className="min-h-screen p-3" style={{ backgroundColor: "#f0f3ff" }}>
-      <h1 className="text-3xl font-bold mb-6 text-[#070c2c] mt-0">
+      <h1 className="text-[#070c2c] text-xl md:text-2xl font-bold mb-4 md:mb-6">
         Liste des formateurs
       </h1>
 

@@ -93,6 +93,9 @@ export default function Formations() {
 
     return (
         <div className="p-4 max-w-screen-xl mx-auto">
+             <h1 className="text-[#070c2c] text-xl md:text-2xl font-bold mb-4 md:mb-6">
+                 Liste des Formations
+            </h1>
             {/* Search */}
             <div className="mb-4 flex flex-col sm:flex-row justify-center gap-2">
                 <input

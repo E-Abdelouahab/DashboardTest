@@ -7,7 +7,7 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 const AnalyticsDonutChart = () => {
   const tabs = ["Formateurs", "Entreprises", "Formations"];
   const filters = ["ce mois ci", "mois dernier", "cette année", "année dernière"];
-  const [subfilters, setSubfilters] = useState(["Âge", "Ville"]); // Default subfilters
+  const [subfilters, setSubfilters] = useState(["Âge", "Ville"]);
   const colors = ["#f79b6b", "#4962F5", "#f55bdd"];
 
   const [chartData, setChartData] = useState({
@@ -22,22 +22,16 @@ const AnalyticsDonutChart = () => {
   const [subfilterDropdown, setSubfilterDropdown] = useState(false);
   const [selectedSegment, setSelectedSegment] = useState(null);
 
-  // Fetching data from API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://my-json-server.typicode.com/E-Abdelouahab/mockjson/dashboard2');
-        console.log('API Response Data:', response.data);
-        
         if (!response.data || !response.data.Formateurs) {
           console.error('dashboard2 not found or malformed:', response.data);
           return;
         }
 
-        // Filter data based on the selected period
         setChartData(filterDataByPeriod(response.data, selectedPeriod));
-
-        // Dynamically update subfilters based on selected tab
         updateSubfilters(response.data[selectedTab]);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -47,7 +41,6 @@ const AnalyticsDonutChart = () => {
     fetchData();
   }, [selectedPeriod, selectedTab]);
 
-  // Filter data based on the selected period
   const filterDataByPeriod = (data, period) => {
     const periodKeyMapping = {
       "ce mois ci": "cemois",
@@ -56,10 +49,8 @@ const AnalyticsDonutChart = () => {
       "année dernière": "anneederniere",
     };
 
-    const periodKey = periodKeyMapping[period]; // Map period to the correct key
-
+    const periodKey = periodKeyMapping[period];
     if (!periodKey) {
-      console.error('Invalid period selected');
       return { Formateurs: [], Entreprises: [], Formations: [] };
     }
 
@@ -70,25 +61,25 @@ const AnalyticsDonutChart = () => {
     };
   };
 
-  // Dynamically update subfilter options based on selected tab
   const updateSubfilters = (tabData) => {
     if (!tabData) return;
-
-    // Dynamically update subfilters based on available data, here assuming "Ville" and "Âge" are common
     setSubfilters(["Âge", "Ville"]);
   };
 
   return (
-    <div className="bg-white shadow-md rounded-sm p-4">
-      {/* Tabs */}
-      <div className="flex flex-nowrap justify-between items-center mb-6">
-        <div className="flex flex-nowrap space-x-2">
+    <div className="bg-white shadow-md rounded-sm p-4 w-full">
+      {/* Tabs + Period Selector (Responsive) */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        {/* Tabs à gauche */}
+        <div className="flex flex-wrap sm:flex-nowrap space-x-2">
           {tabs.map((tab) => (
             <button
               key={tab}
               onClick={() => setSelectedTab(tab)}
-              className={`pb-2 text-sm sm:text-sm font-semibold ${
-                selectedTab === tab ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600'
+              className={`pb-1 text-sm font-semibold ${
+                selectedTab === tab
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600'
               }`}
             >
               {tab}
@@ -96,8 +87,8 @@ const AnalyticsDonutChart = () => {
           ))}
         </div>
 
-        {/* Period Dropdown */}
-        <div className="relative mt-4 sm:mt-0">
+        {/* Period Dropdown à droite */}
+        <div className="relative self-start sm:self-auto">
           <button
             onClick={() => setFilterDropdown(!filterDropdown)}
             className="bg-gray-100 px-4 py-2 rounded-full text-sm text-gray-700 flex items-center"
@@ -126,13 +117,13 @@ const AnalyticsDonutChart = () => {
         </div>
       </div>
 
-      {/* Chart and subfilter */}
-      <div className="flex flex-col lg:flex-row items-center justify-between">
-        {/* Left dropdown (subfilter) */}
-        <div className="relative w-full sm:w-1/4 mb-4 sm:mb-0">
+      {/* Chart Section */}
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
+        {/* Subfilter Dropdown */}
+        <div className="relative w-full sm:w-1/4">
           <button
             onClick={() => setSubfilterDropdown(!subfilterDropdown)}
-            className="bg-gray-100 px-4 py-2 rounded-md text-xs sm:text-sm text-gray-700 w-full text-left flex justify-between items-center"
+            className="bg-gray-100 px-4 py-2 rounded-md text-sm text-gray-700 w-full text-left flex justify-between items-center"
           >
             {selectedSubfilter}
             <svg className="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none">
@@ -148,7 +139,7 @@ const AnalyticsDonutChart = () => {
                     setSelectedSubfilter(f);
                     setSubfilterDropdown(false);
                   }}
-                  className="block w-full px-4 py-2 text-left text-xs sm:text-sm hover:bg-gray-100"
+                  className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
                 >
                   {f}
                 </button>
@@ -192,27 +183,27 @@ const AnalyticsDonutChart = () => {
           </ResponsiveContainer>
         </div>
 
-        {/* Stats */}
-        <div className="text-center w-full sm:w-1/3 mt-4 sm:mt-0">
-          <div className="text-blue-600 text-xs sm:text-sm font-medium flex justify-center items-center gap-1">
+        {/* Stats à droite */}
+        <div className="text-center w-full sm:w-1/3">
+          <div className="text-blue-600 text-sm font-medium flex justify-center items-center gap-1">
             <svg width="16" height="16" fill="none">
               <path d="M6 9l4-4 4 4" stroke="currentColor" strokeWidth="2" />
             </svg>
             +16%
           </div>
-          <div className="text-xl sm:text-2xl font-bold">+ 50</div>
+          <div className="text-2xl font-bold">+ 50</div>
         </div>
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap justify-center mt-4 space-x-4 sm:space-x-6">
+      {/* Légende */}
+      <div className="flex flex-wrap justify-center mt-6 space-x-4 sm:space-x-6">
         {chartData[selectedTab].map((item, index) => (
           <div key={index} className="flex items-center gap-2">
             <span
               className="w-3 h-3 rounded-full"
-              style={{ backgroundColor: colors[index] }}
+              style={{ backgroundColor: colors[index % colors.length] }}
             />
-            <span className="text-xs sm:text-sm text-gray-700">{item.name}</span>
+            <span className="text-sm text-gray-700">{item.name}</span>
           </div>
         ))}
       </div>

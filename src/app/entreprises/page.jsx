@@ -157,7 +157,7 @@ export default function Entreprises() {
 
     return (
         <div className="p-2 md:p-4">
-            <h1 className="text-xl md:text-2xl font-bold mb-4 md:mb-6">Liste des Entreprises</h1>
+            <h1 className="text-[#070c2c] text-xl md:text-2xl font-bold mb-4 md:mb-6">Liste des Entreprises</h1>
             
             {/* Search Input */}
             <div className="mb-6">
